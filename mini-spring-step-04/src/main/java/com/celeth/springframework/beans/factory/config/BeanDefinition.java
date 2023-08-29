@@ -1,6 +1,6 @@
 package com.celeth.springframework.beans.factory.config;
 
-import com.celeth.springframework.beans.factory.PropertyValues;
+import com.celeth.springframework.beans.PropertyValues;
 
 /**
  *

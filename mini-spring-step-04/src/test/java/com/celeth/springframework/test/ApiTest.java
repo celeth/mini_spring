@@ -4,15 +4,15 @@
 
  package com.celeth.springframework.test;
 
- import com.celeth.springframework.beans.factory.PropertyValue;
- import com.celeth.springframework.beans.factory.PropertyValues;
+ import com.celeth.springframework.beans.PropertyValue;
+ import com.celeth.springframework.beans.PropertyValues;
  import com.celeth.springframework.beans.factory.config.BeanDefinition;
  import com.celeth.springframework.beans.factory.config.BeanReference;
  import com.celeth.springframework.beans.factory.support.DefaultListableBeanFactory;
+ import com.celeth.springframework.beans.factory.xml.XmlBeanDefinitionReader;
  import com.celeth.springframework.test.bean.UserDao;
  import com.celeth.springframework.test.bean.UserService;
  import org.junit.jupiter.api.Test;
- import org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory;
 
  /**
   * @author IBM陳玉体
@@ -41,4 +41,20 @@
      UserService userService = (UserService) beanFactory.getBean("userService");
      userService.queryUserInfo();
    }
+
+   @Test
+   public void test_xml() {
+     // 1.初始化 BeanFactory
+     DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+
+     // 2. 读取配置文件&注册Bean
+     XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
+     reader.loadBeanDefinitions("classpath:spring.xml");
+
+     // 3. 获取Bean对象调用方法
+     UserService userService = beanFactory.getBean("userService", UserService.class);
+     String result = userService.queryUserInfo();
+     System.out.println("测试结果：" + result);
+   }
+
  }

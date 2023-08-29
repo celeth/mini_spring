@@ -2,7 +2,7 @@
   * Copyright © 2022 Yazaki Kako Corporation. All Rights Reserved
   */
 
- package com.celeth.springframework.beans.factory;
+ package com.celeth.springframework.beans;
 
  import java.util.ArrayList;
  import java.util.List;

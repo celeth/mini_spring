@@ -17,9 +17,8 @@
 
    private UserDao userDao;
 
-   public void queryUserInfo() {
-     System.out.println(uId);
-     System.out.println("search userinfo: " + userDao.queryUserName(uId));
+   public String queryUserInfo() {
+     return userDao.queryUserName(uId);
    }
 
    public String getuId() {

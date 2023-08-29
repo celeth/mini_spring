@@ -6,8 +6,8 @@
 
  import cn.hutool.core.bean.BeanUtil;
  import com.celeth.springframework.beans.BeansException;
- import com.celeth.springframework.beans.factory.PropertyValue;
- import com.celeth.springframework.beans.factory.PropertyValues;
+ import com.celeth.springframework.beans.PropertyValue;
+ import com.celeth.springframework.beans.PropertyValues;
  import com.celeth.springframework.beans.factory.config.BeanDefinition;
  import com.celeth.springframework.beans.factory.config.BeanReference;
  import java.lang.reflect.Constructor;
