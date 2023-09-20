@@ -10,7 +10,13 @@
   * @since 2023/8/29 10:09
   */
  public class UserService {
+   private String name;
+
+   public UserService(String name) {
+     this.name = name;
+   }
+
    public void queryUserInfo() {
-     System.out.println("search user info");
+     System.out.println("search user info" + name);
    }
  }
