@@ -4,8 +4,12 @@
 
  package com.celeth.springframework.beans.factory.support;
 
+ import cn.hutool.core.bean.BeanUtil;
  import com.celeth.springframework.beans.BeansException;
+ import com.celeth.springframework.beans.PropertyValue;
+ import com.celeth.springframework.beans.PropertyValues;
  import com.celeth.springframework.beans.factory.config.BeanDefinition;
+ import com.celeth.springframework.beans.factory.config.BeanReference;
  import java.lang.reflect.Constructor;
 
  /**
@@ -21,11 +25,37 @@
      Object bean;
      try {
        bean = createBeanInstance(beanDefination, name, args);
+       // 给 Bean 填充属性
+       applyPropertyValues(name, bean, beanDefination);
      } catch (Exception e) {
        throw new BeansException("Instantiation of bean failed", e);
      }
      addSingleton(name, bean);
      return bean;
+   }
+
+   /**
+    * Bean 属性填充
+    */
+   protected void applyPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) {
+     try {
+       PropertyValues propertyValues = beanDefinition.getPropertyValues();
+       for (PropertyValue propertyValue : propertyValues.getPropertyValues()) {
+
+         String name = propertyValue.getName();
+         Object value = propertyValue.getValue();
+
+         if (value instanceof BeanReference) {
+           // A 依赖 B，获取 B 的实例化
+           BeanReference beanReference = (BeanReference) value;
+           value = getBean(beanReference.getBeanName());
+         }
+         // 属性填充
+         BeanUtil.setFieldValue(bean, name, value);
+       }
+     } catch (Exception e) {
+       throw new BeansException("Error setting property values：" + beanName);
+     }
    }
 
    protected Object createBeanInstance(BeanDefinition beanDefinition, String beanName,
