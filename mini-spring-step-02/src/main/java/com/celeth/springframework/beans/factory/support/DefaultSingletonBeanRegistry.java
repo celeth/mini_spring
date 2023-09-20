@@ -1,26 +1,18 @@
- /*
-  * Copyright © 2022 Yazaki Kako Corporation. All Rights Reserved
-  */
+package com.celeth.springframework.beans.factory.support;
 
- package com.celeth.springframework.beans.factory.support;
+import com.celeth.springframework.beans.factory.config.SingletonBeanRegistry;
+import java.util.concurrent.ConcurrentHashMap;
 
- import com.celeth.springframework.beans.factory.config.SingletonBeanRegistry;
- import java.util.HashMap;
- import java.util.Map;
+public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
+  private ConcurrentHashMap<String, Object> singletonObjects =
+      new ConcurrentHashMap<>();
 
- /**
-  * @author IBM陳玉体
-  * @version 0.0.1
-  * @since 2023/8/29 9:42
-  */
- public abstract class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
-   private Map<String, Object> singletonObjects = new HashMap<>();
+  @Override
+  public Object getSingleton(String beanName) {
+    return singletonObjects.get(beanName);
+  }
 
-   public Object getSingleton(String beanName) {
-     return singletonObjects.get(beanName);
-   }
-
-   public void addSingleton(String beanName, Object singletonObject) {
-     singletonObjects.put(beanName, singletonObject);
-   }
- }
+  protected void addSingleton(String beanName, Object singletonObject) {
+    singletonObjects.put(beanName, singletonObject);
+  }
+}

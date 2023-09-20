@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>mini-spring-step-04</module>
+        <module>mini-spring-step-02</module>
     </modules>
 
 </project>

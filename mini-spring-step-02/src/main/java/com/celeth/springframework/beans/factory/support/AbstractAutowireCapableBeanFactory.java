@@ -10,21 +10,19 @@
  /**
   * @author IBM陳玉体
   * @version 0.0.1
-  * @since 2023/8/29 9:44
+  * @since 2023/9/20 15:14
   */
  public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory {
    @Override
-   protected Object createBean(String beanName, BeanDefinition beanDefinition)
-       throws BeansException {
-     Object bean = null;
+   protected Object createBean(String name, BeanDefinition beanDefination) {
+     Object bean;
+     Class beanClass = beanDefination.getBeanClass();
      try {
-       bean = beanDefinition.getBeanClass().newInstance();
-     } catch (InstantiationException e) {
-       throw new RuntimeException(e);
-     } catch (IllegalAccessException e) {
-       throw new RuntimeException(e);
+       bean = beanClass.newInstance();
+     } catch (InstantiationException | IllegalAccessException e) {
+       throw new BeansException("Instantiation of bean failed", e);
      }
-     addSingleton(beanName, bean);
+     addSingleton(name, bean);
      return bean;
    }
  }

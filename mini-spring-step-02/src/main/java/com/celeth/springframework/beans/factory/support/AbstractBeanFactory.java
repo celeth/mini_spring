@@ -11,7 +11,7 @@
  /**
   * @author IBM陳玉体
   * @version 0.0.1
-  * @since 2023/8/29 9:41
+  * @since 2023/9/20 15:09
   */
  public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements
      BeanFactory {
@@ -21,13 +21,13 @@
      if (singleton != null) {
        return singleton;
      }
-     BeanDefinition beanDefinition = getBeanDefinition(name);
-     Object bean = createBean(name, beanDefinition);
-     return bean;
+     BeanDefinition beanDefination = getBeanDefinition(name);
+     return createBean(name, beanDefination);
    }
 
-   protected abstract BeanDefinition getBeanDefinition(String beanName) throws BeansException;
+   protected abstract Object createBean(String name, BeanDefinition beanDefination);
 
-   protected abstract Object createBean(String beanName, BeanDefinition beanDefinition)
-       throws BeansException;
+   protected abstract BeanDefinition getBeanDefinition(String name);
+
+
  }

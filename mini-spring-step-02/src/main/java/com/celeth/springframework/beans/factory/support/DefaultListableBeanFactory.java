@@ -12,23 +12,25 @@
  /**
   * @author IBM陳玉体
   * @version 0.0.1
-  * @since 2023/8/29 9:44
+  * @since 2023/9/20 15:18
   */
  public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory
      implements BeanDefinitionRegistry {
-   private Map<String, BeanDefinition> beanDefinitionMap = new HashMap<>();
+
+
+   private final Map<String, BeanDefinition> beanDefinitionMap = new HashMap<>();
 
    @Override
-   protected BeanDefinition getBeanDefinition(String beanName) throws BeansException {
+   public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition) {
+     beanDefinitionMap.put(beanName, beanDefinition);
+   }
+
+   @Override
+   public BeanDefinition getBeanDefinition(String beanName) throws BeansException {
      BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
     if (beanDefinition == null) {
      throw new BeansException("No bean named '" + beanName + "' is defined");
     }
      return beanDefinition;
-   }
-
-   @Override
-   public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition) {
-     beanDefinitionMap.put(beanName, beanDefinition);
    }
  }

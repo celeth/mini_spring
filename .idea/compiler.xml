@@ -6,13 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="mini-spring-step-04" />
-        <module name="mini-spring-step-03" />
         <module name="mini-spring-step-02" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="18">
       <module name="mini-spring-step-02 (1)" target="17" />
+      <module name="mini-spring-step-03" target="17" />
+      <module name="mini-spring-step-04" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
