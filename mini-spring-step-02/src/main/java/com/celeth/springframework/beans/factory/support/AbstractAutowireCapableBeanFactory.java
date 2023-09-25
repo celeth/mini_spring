@@ -15,51 +15,46 @@
  /**
   * @author IBM陳玉体
   * @version 0.0.1
-  * @since 2023/9/20 15:14
+  * @since 2023/9/25 10:58
   */
  public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory {
    private InstantiationStrategy instantiationStrategy = new SimpleInstantiationStrategy();
 
    @Override
-   protected Object createBean(String name, BeanDefinition beanDefination, Object[] args) {
-     Object bean;
+   protected Object createBean(String beanName, BeanDefinition beanDefinition, Object... args)
+       throws BeansException {
+     Object bean = null;
      try {
-       bean = createBeanInstance(beanDefination, name, args);
-       // 给 Bean 填充属性
-       applyPropertyValues(name, bean, beanDefination);
+       bean = createBeanInstance(beanName, beanDefinition, args);
+       applyPropertyValues(beanName, bean, beanDefinition);
      } catch (Exception e) {
-       throw new BeansException("Instantiation of bean failed", e);
+       throw new BeansException("bean init failed.");
      }
-     addSingleton(name, bean);
+     addSingleton(beanName, bean);
      return bean;
    }
 
-   /**
-    * Bean 属性填充
-    */
-   protected void applyPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) {
+   private void applyPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) {
      try {
        PropertyValues propertyValues = beanDefinition.getPropertyValues();
-       for (PropertyValue propertyValue : propertyValues.getPropertyValues()) {
-
-         String name = propertyValue.getName();
-         Object value = propertyValue.getValue();
-
-         if (value instanceof BeanReference) {
-           // A 依赖 B，获取 B 的实例化
-           BeanReference beanReference = (BeanReference) value;
-           value = getBean(beanReference.getBeanName());
+       if (propertyValues != null) {
+         for (PropertyValue p : propertyValues.getPropertyValues()) {
+           String name = p.getName();
+           Object value = p.getValue();
+           if (value instanceof BeanReference) {
+             BeanReference beanReference = (BeanReference) value;
+             value = getBean(beanReference.getBeanName());
+           }
+           BeanUtil.setFieldValue(bean, name, value);
          }
-         // 属性填充
-         BeanUtil.setFieldValue(bean, name, value);
        }
      } catch (Exception e) {
-       throw new BeansException("Error setting property values：" + beanName);
+       throw new BeansException("reference failed.");
      }
    }
 
-   protected Object createBeanInstance(BeanDefinition beanDefinition, String beanName,
-                                       Object[] args) {
+   private Object createBeanInstance(String beanName, BeanDefinition beanDefinition,
+                                     Object[] args) {
      Constructor constructorToUse = null;
      Class<?> beanClass = beanDefinition.getBeanClass();
      Constructor<?>[] declaredConstructors = beanClass.getDeclaredConstructors();

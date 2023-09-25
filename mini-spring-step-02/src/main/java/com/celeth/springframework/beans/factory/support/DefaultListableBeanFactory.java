@@ -12,13 +12,11 @@
  /**
   * @author IBM陳玉体
   * @version 0.0.1
-  * @since 2023/9/20 15:18
+  * @since 2023/9/25 11:00
   */
- public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory
-     implements BeanDefinitionRegistry {
-
-
-   private final Map<String, BeanDefinition> beanDefinitionMap = new HashMap<>();
+ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements
+     BeanDefinitionRegistry {
+   private Map<String, BeanDefinition> beanDefinitionMap = new HashMap<>();
 
    @Override
    public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition) {
@@ -26,11 +24,11 @@
    }
 
    @Override
-   public BeanDefinition getBeanDefinition(String beanName) throws BeansException {
+   protected BeanDefinition getBeanDefinition(String beanName) throws BeansException {
      BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
-    if (beanDefinition == null) {
-     throw new BeansException("No bean named '" + beanName + "' is defined");
-    }
+     if (beanDefinition == null) {
+       throw new BeansException("bean has not registered.");
+     }
      return beanDefinition;
    }
  }
