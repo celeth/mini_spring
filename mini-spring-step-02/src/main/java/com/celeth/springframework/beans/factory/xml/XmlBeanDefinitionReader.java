@@ -57,6 +57,13 @@
      loadBeanDefinitions(resource);
    }
 
+   @Override
+   public void loadBeanDefinitions(String... locations) throws BeansException {
+     for (String location : locations) {
+       loadBeanDefinitions(location);
+     }
+   }
+
    protected void doLoadBeanDefinitions(InputStream inputStream) throws ClassNotFoundException {
      Document doc = XmlUtil.readXML(inputStream);
      Element root = doc.getDocumentElement();
@@ -64,13 +71,13 @@
 
      for (int i = 0; i < childNodes.getLength(); i++) {
        // 判断元素
-      if (!(childNodes.item(i) instanceof Element)) {
-       continue;
-      }
+       if (!(childNodes.item(i) instanceof Element)) {
+         continue;
+       }
        // 判断对象
-      if (!"bean".equals(childNodes.item(i).getNodeName())) {
-       continue;
-      }
+       if (!"bean".equals(childNodes.item(i).getNodeName())) {
+         continue;
+       }
 
        // 解析标签
        Element bean = (Element) childNodes.item(i);
@@ -89,12 +96,12 @@
        BeanDefinition beanDefinition = new BeanDefinition(clazz);
        // 读取属性并填充
        for (int j = 0; j < bean.getChildNodes().getLength(); j++) {
-        if (!(bean.getChildNodes().item(j) instanceof Element)) {
-         continue;
-        }
-        if (!"property".equals(bean.getChildNodes().item(j).getNodeName())) {
-         continue;
-        }
+         if (!(bean.getChildNodes().item(j) instanceof Element)) {
+           continue;
+         }
+         if (!"property".equals(bean.getChildNodes().item(j).getNodeName())) {
+           continue;
+         }
          // 解析标签：property
          Element property = (Element) bean.getChildNodes().item(j);
          String attrName = property.getAttribute("name");
